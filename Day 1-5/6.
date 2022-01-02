@@ -1,0 +1,64 @@
+
+Problem Link : https://leetcode.com/problems/greatest-common-divisor-of-strings/
+
+
+class Solution {
+public:
+    int GCD(int n1,int n2){
+        if(n2==0) return n1;
+        return GCD(n2,n1%n2);
+    }
+    string gcdOfStrings(string s1, string s2) {
+        if(s1+s2!=s2+s1) return "";
+        return s1.substr(0,GCD(s1.size(),s2.size()));
+    }
+};
+
+
+/*
+
+class Solution {
+public:
+    vector<int> find(int n){
+        vector<int> ans;
+        for(int i=1;i*i<=n;i++){
+            if(n%i==0){
+                if(n/i!=i) ans.push_back(n/i);
+                ans.push_back(i);
+            }
+        }
+        return ans;
+    }
+    bool check(string &s,int i,int x){
+        for(int j=0;j<x;j++,i++){
+            if(s[j]!=s[i]) return false;
+        }
+        return true;
+    }
+    string gcdOfStrings(string str1, string str2) {
+        int n1=str1.length(),n2=str2.length();
+        vector<int> div1=find(n1),div2=find(n2);
+        unordered_set<string> st;
+        string ans;
+        for(auto x:div1){
+            int i;
+            for(i=0;i<n1;i+=x){
+                if(check(str1,i,x)==false) break;
+            }
+            if(i>=n1) st.insert(str1.substr(0,x));
+        }
+        for(auto x:div2){
+            int i;
+            for(i=0;i<n2;i+=x){
+                if(check(str2,i,x)==false) break;
+            }
+            if(i>=n2){
+                string s=str2.substr(0,x);
+                if(st.find(s)!=st.end() && s.size()>ans.size()) ans=s; 
+            }
+        }
+        return ans;
+    }
+};
+
+*/

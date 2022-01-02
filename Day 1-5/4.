@@ -1,0 +1,19 @@
+
+Problem link : https://practice.geeksforgeeks.org/problems/run-length-encoding/1/
+
+
+string encode(string src)
+{     
+  string ans;
+  char pre=src[0];
+  int count=1;
+  for(int i=1;i<src.length();i++){
+      if(src[i]!=pre){
+          ans+=pre+to_string(count);
+          pre=src[i];
+          count=1;
+      }else count++;
+  }
+  ans+=pre+to_string(count);
+  return ans;
+} 

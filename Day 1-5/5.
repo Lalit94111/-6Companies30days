@@ -1,0 +1,28 @@
+
+Problem Link : https://practice.geeksforgeeks.org/problems/ugly-numbers2254/1/
+
+
+class Solution{
+public:	
+	// #define ull unsigned long long
+	/* Function to get the nth ugly number*/
+	ull min(ull a,ull b){
+        return a<=b?a:b;
+    }
+    ull min(ull a,ull b,ull c){
+        return min(a,min(b,c));
+    }
+	ull getNthUglyNo(int n) {
+	    if(n==1) return 1;
+        vector<ull> ugly={1};
+        int x2=0,x3=0,x5=0;
+        for(int i=1;i<n && ugly.size()<n;i++){
+            ull num=min(ugly[x2]*2,ugly[x3]*3,ugly[x5]*5);
+            ugly.push_back(num);
+            if(num==ugly[x2]*2) x2++;
+            if(num==ugly[x3]*3) x3++;
+            if(num==ugly[x5]*5) x5++;
+        }
+        return ugly[n-1];
+	}
+};

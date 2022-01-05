@@ -1,0 +1,59 @@
+
+Problem Link : https://leetcode.com/problems/minimum-size-subarray-sum/
+
+
+class Solution {
+public:
+    int find(int sum,vector<int>& pre_sum){
+        int n=pre_sum.size();
+        int s=0,e=n-1,ans=-1;
+        while(s<=e){
+            int mid=s+(e-s)/2;
+            if(pre_sum[mid]>=sum){
+                ans=mid;
+                e=mid-1;
+            }
+            else s=mid+1;
+        }
+        return ans==-1?INT_MAX:ans;
+    }
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n=nums.size();
+        vector<int> pre_sum(n+1);
+        pre_sum[0]=0;
+        for(int i=1;i<n+1;i++){
+            pre_sum[i]=pre_sum[i-1]+nums[i-1];
+        }
+        int ans=INT_MAX;
+        for(int i=0;i<n;i++){
+            ans=min(ans,find(pre_sum[i]+target,pre_sum)-i);
+        }
+        return ans>n?0:ans;
+    }
+};
+
+
+
+// above code is using binary search
+
+// below code is using sliding window
+
+
+//     int minSubArrayLen(int target, vector<int>& nums) {
+//         int n=nums.size();
+//         int i=0,j=0,sum=0,ans=INT_MAX;
+//         while(j<n){
+//             sum+=nums[j];
+//             if(sum>=target){
+//                 while(sum>=target){
+//                     ans=min(ans,j-i+1);
+//                     sum-=nums[i];
+//                     i++;
+//                 }
+//             }
+//             j++;
+//         }
+//         if(ans==INT_MAX) return 0;
+//         return ans;
+//     }
+// };

@@ -1,0 +1,25 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/find-missing-and-repeating2512/1/
+
+
+class Solution{
+public:
+    int ans[2];
+    int *findTwoElement(int *arr, int num) {
+        long long int n=num;
+        long long int sum,sumsq;
+        sum=(n*(n+1))/2;
+        sumsq=(n*(n+1)*(2*n+1))/6;
+        for(int i=0;i<num;i++){
+            sum-=(long long int)arr[i];
+            sumsq-=(long long int)arr[i]*arr[i];
+        }
+        long long int miss=0,repp=0;
+        miss=(sumsq/sum+sum)/2;
+        repp=miss-sum;
+        ans[0]=repp;
+        ans[1]=miss;
+        return ans;
+    }
+};

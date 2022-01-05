@@ -1,0 +1,23 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/array-pair-sum-divisibility-problem3257/1
+
+
+class Solution {
+  public:
+    bool canPair(vector<int> nums, int k) {
+        int n=nums.size();
+        if(n%2) return false;
+        unordered_map<int,int> mp;
+        for(int i=0;i<n;i++){
+            nums[i]=nums[i]%k;
+            int other=(k-nums[i])%k;
+            if(mp.find(other)!=mp.end()){
+                mp[other]--;
+                if(mp[other]==0) mp.erase(other);
+            }
+            else mp[nums[i]]++;
+        }
+        return mp.size()==0;
+    }
+};

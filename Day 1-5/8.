@@ -1,0 +1,31 @@
+
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/total-decoding-messages1235/1/
+
+class Solution {
+	public:
+	    int t[10001];
+	    int mod=1e9+7;
+	    int solve(string& str,int i){
+	        if(i==str.length()) return 1;
+	        if(i>str.length()) return 0;
+	        if(str[i]=='0') return 0;
+	        if(t[i]!=-1) return t[i];
+	        int ans=0;
+	        if(str[i]=='1') ans=solve(str,i+1)%mod+solve(str,i+2)%mod;
+	        else if(str[i]=='2'){
+	            if(i+1<str.length() && str[i+1]-'0'<=6) ans=solve(str,i+1)%mod+solve(str,i+2)%mod;
+	            else ans=solve(str,i+1)%mod;
+	        }
+	        else ans=solve(str,i+1)%mod;
+	        ans=ans%mod;
+	        if(ans<0) ans+=mod;
+	        return t[i]=ans;
+	    }
+		int CountWays(string str){
+		    memset(t,-1,sizeof(t));
+		    return solve(str,0);
+		}
+
+};

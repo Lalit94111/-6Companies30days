@@ -1,0 +1,47 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/decode-the-string2444/1
+
+
+class Solution{
+public:
+    string decodedString(string s){
+        stack<char> st;
+        int n=s.length();
+        
+        for(int i=0;i<n;i++){
+            if(s[i]!=']') st.push(s[i]);
+            else{
+                string patt;
+                while(st.top()!='['){
+                    patt.push_back(st.top());
+                    st.pop();
+                }
+                st.pop();
+                string count;
+                while(!st.empty() && isdigit(st.top())){
+                    count.push_back(st.top());
+                    st.pop();
+                }
+                reverse(patt.begin(),patt.end());
+                reverse(count.begin(),count.end());
+                int num=stoi(count);
+                string temp=patt;
+                while(num>1){
+                    patt+=temp;
+                    num--;
+                }
+                for(auto x:patt){
+                    st.push(x);
+                }
+            }
+        }
+        string ans;
+        while(!st.empty()){
+            ans.push_back(st.top());
+            st.pop();
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};

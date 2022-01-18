@@ -1,0 +1,112 @@
+
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/phone-directory4628/1/
+
+
+Trie solution
+class Trie{
+public:
+    bool is_end;
+    Trie* next[26];
+    Trie(){
+        is_end=false;
+        for(int i=0;i<26;i++) next[i]=NULL;
+    }
+};
+
+Trie* insert(int n,string contact[]){
+    Trie* root=new Trie();
+    for(int i=0;i<n;i++){
+        string s=contact[i];
+        Trie* temp=root;
+        for(auto x:s){
+            if(temp->next[x-'a']==NULL) temp->next[x-'a']=new Trie();
+            temp=temp->next[x-'a'];
+        }
+        temp->is_end=true;
+    }
+    return root;
+}
+
+void solve(Trie* root,string temp,vector<string>& v){
+    if(root->is_end==true){
+        v.push_back(temp);
+    }
+    for(int i=0;i<26;i++){
+        if(root->next[i]!=NULL){
+            solve(root->next[i],temp+char('a'+i),v);
+        }
+    }
+}
+
+class Solution{
+public:
+    vector<vector<string>> displayContacts(int n, string contact[], string s)
+    {
+        Trie *root=insert(n,contact);
+        vector<vector<string>> ans;
+        
+        bool flag=false;
+        string temp;
+        for(int i=0;i<s.length();i++){
+            temp.push_back(s[i]);
+            if(!flag && root->next[s[i]-'a']!=NULL){
+                root=root->next[s[i]-'a'];
+                vector<string> v;
+                solve(root,temp,v);
+                ans.push_back(v);
+            }
+            else{
+                ans.push_back({"0"});
+                flag=true;
+            }
+        }
+        return ans;
+    }
+};
+
+
+/*
+vector<int> prefix_fun(string& s){
+        int n=s.length();
+        vector<int> pi(n,0);
+        for(int i=1;i<n;i++){
+            int j=pi[i-1];
+            while(j>0 && s[i]!=s[j]) j=pi[j-1];
+            if(s[i]==s[j]) j++;
+            pi[i]=j;
+        }
+        return pi;
+    }
+    bool check(string s1,string s2){
+        int n=s1.length(),m=s2.length();
+        if(m>n) return false;
+        s2=s2+char('#')+s1;
+        vector<int> pi=prefix_fun(s2);
+        for(auto x:pi){
+            if(x==m) return true;
+        }
+        return false;
+    }
+    vector<vector<string>> displayContacts(int n, string contacts[], string s)
+    {
+        vector<vector<string>> ans;
+        
+        unordered_set<string> st;
+        for(int i=0;i<n;i++) st.insert(contacts[i]);
+        vector<string> contact;
+        for(auto x:st) contact.push_back(x);
+        sort(contact.begin(),contact.end());
+        
+        int l=s.length();
+        for(int i=0;i<l;i++){
+            string temp=s.substr(0,i+1);
+            vector<string> v;
+            for(int j=0;j<contact.size();j++){
+                if(check(contact[j],temp)==true) v.push_back(contact[j]);
+            }
+            if(v.size()==0) ans.push_back({"0"});
+            else ans.push_back(v);
+        }
+        return ans;

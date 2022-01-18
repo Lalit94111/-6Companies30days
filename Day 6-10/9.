@@ -1,0 +1,22 @@
+
+
+Problem Link: https://practice.geeksforgeeks.org/problems/is-sudoku-valid4820/1/
+
+
+class Solution{
+public:
+    int isValid(vector<vector<int>> mat){
+        int row[9][9]={0},col[9][9]={0},box[9][9]={0};
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(mat[i][j]==0) continue;
+                int num=mat[i][j];
+                row[i][num-1]++;
+                col[num-1][j]++;
+                box[(i/3)*3+j/3][num-1]++;
+                if(row[i][num-1]>1 || col[num-1][j]>1 || box[(i/3)*3+j/3][num-1]>1) return false;
+            }
+        }
+        return true;
+    }
+};

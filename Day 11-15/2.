@@ -1,0 +1,35 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/prerequisite-tasks/1/
+
+class Solution {
+public:
+	bool isPossible(int N, vector<pair<int, int> >& p) {
+	    vector<int> adj[N];
+	    int ind[N]={0};
+	    for(auto x:p){
+	        adj[x.second].push_back(x.first);
+	        ind[x.first]++;
+	    }
+	    queue<int> q;
+	    int count=0;
+	    for(int i=0;i<N;i++){
+	        if(ind[i]==0){
+	            q.push(i);
+	            count++;
+	        }
+	    }
+	    while(!q.empty()){
+	        int n=q.front();
+	        q.pop();
+	        for(auto x:adj[n]){
+	            ind[x]--;
+	            if(ind[x]==0){
+	                q.push(x);
+	                count++;
+	            }
+	        }
+	    }
+	    return count==N;
+	}
+};

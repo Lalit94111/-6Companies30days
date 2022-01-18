@@ -1,0 +1,48 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/alien-dictionary/1/
+
+class Solution{
+    public:
+    int solve(string& s1,string& s2){
+        int n1=s1.length(),n2=s2.length();
+        for(int i=0;i<n1 && i<n2;i++){
+            if(s1[i]!=s2[i]) return i;
+        }
+        return -1;
+    }
+    string findOrder(string dict[], int n, int k) {
+        unordered_map<char,vector<char>> mp;
+        int ind[k]={0};
+        
+        for(int i=1;i<n;i++){
+            int idx=solve(dict[i-1],dict[i]);
+            if(idx!=-1){
+                mp[dict[i-1][idx]].push_back(dict[i][idx]);
+                ind[dict[i][idx]-'a']++;
+            }
+        }
+        
+        string ans;
+        queue<char> q;
+        for(int i=0;i<k;i++){
+            if(ind[i]==0){
+                q.push(i+'a');
+                ans.push_back(i+'a');
+            } 
+        }
+        
+        while(!q.empty()){
+            char c=q.front();
+            q.pop();
+            for(auto x:mp[c]){
+                ind[x-'a']--;
+                if(ind[x-'a']==0){
+                    q.push(x);
+                    ans.push_back(x);
+                }
+            }
+        }
+        return ans;
+    }
+};

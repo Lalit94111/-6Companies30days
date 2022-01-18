@@ -1,0 +1,29 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/brackets-in-matrix-chain-multiplication1024/1/
+
+class Solution{
+public:
+    map<pair<int,int>,pair<int,string>> mp;
+    pair<int,string> solve(int i,int j,int p[]){
+        if(i==j) return {0,string(1,i-1+'A')};
+        if(mp.find({i,j})!=mp.end()) return mp[{i,j}];
+        int ans=INT_MAX;
+        string st;
+        for(int k=i;k<j;k++){
+            pair<int,string> p1,p2;
+            p1=solve(i,k,p);
+            p2=solve(k+1,j,p);
+            int temp=p[i-1]*p[j]*p[k]+p1.first+p2.first;
+            if(ans>temp){
+                ans=temp;
+                st="("+ p1.second +p2.second+")";
+            }
+        }
+        return mp[{i,j}]={ans,st};
+    }
+    string matrixChainOrder(int p[], int n){
+        mp.clear();
+        return solve(1,n-1,p).second;
+    }
+};

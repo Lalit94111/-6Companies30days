@@ -1,1 +1,27 @@
 
+
+Problem Link : https://practice.geeksforgeeks.org/problems/maximum-profit4657/1
+
+
+class Solution {
+  public:
+  int t[501][201][2];
+    int solve(int i,int k,int n,int a[],int state){
+        if(i>=n || k==0) return 0;
+        if(t[i][k][state]!=-1) return t[i][k][state];
+        int ans=0;
+        if(state){
+            int temp=max(solve(i+1,k-1,n,a,0)+a[i],solve(i+1,k,n,a,1));
+            ans=max(ans,temp);
+        }
+        else{
+            int temp=max(solve(i+1,k,n,a,1)-a[i],solve(i+1,k,n,a,0));
+            ans=max(ans,temp);
+        }
+        return t[i][k][state]=ans;
+    }
+    int maxProfit(int K, int N, int A[]) {
+        memset(t,-1,sizeof(t));
+        return solve(0,K,N,A,0);
+    }
+};

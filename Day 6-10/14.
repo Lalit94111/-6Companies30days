@@ -1,0 +1,61 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/burning-tree/1/
+
+
+class Solution {
+  public:
+    int BFS(Node *root,map<Node *,Node *>& mp){
+        set<Node*> vis;
+        queue<Node*> q;
+        q.push(root);
+        vis.insert(root);
+        int ans=0;
+        while(!q.empty()){
+            int sz=q.size();
+            while(sz--){
+                Node *temp=q.front();
+                q.pop();
+                if(temp->left!=NULL && vis.find(temp->left)==vis.end()){
+                    q.push(temp->left);
+                    vis.insert(temp->left);
+                }
+                if(temp->right!=NULL && vis.find(temp->right)==vis.end()){
+                    q.push(temp->right);
+                    vis.insert(temp->right);
+                }
+                if(mp[temp] && vis.find(mp[temp])==vis.end()){
+                    q.push(mp[temp]);
+                    vis.insert(mp[temp]);
+                }
+            }
+            if(!q.empty()) ans++;
+        }
+        return ans;
+    }
+    Node *mapToParent(Node *root,int target,map<Node *,Node *>& mp){
+        Node *res;
+        queue<Node*> q;
+        q.push(root);
+        while(!q.empty()){
+            Node *temp=q.front();
+            q.pop();
+            if(temp->data==target) res=temp;
+            if(temp->left!=NULL){
+                mp[temp->left]=temp;
+                q.push(temp->left);
+            }
+            if(temp->right!=NULL){
+                mp[temp->right]=temp;
+                q.push(temp->right);
+            }
+        }
+        return res;
+    }
+    int minTime(Node* root, int target) 
+    {
+        map<Node *,Node *> mp;
+        Node *n=mapToParent(root,target,mp);
+        return BFS(n,mp);
+    }
+};

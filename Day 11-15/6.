@@ -1,0 +1,41 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/possible-words-from-phone-digits-1587115620/1/
+
+class Solution
+{
+    public:
+    //Function to find list of all words possible by pressing given numbers.
+    void solve(int a[],int n,int idx,vector<string>& ans,string& temp,vector<string>& mp){
+        
+        if(idx==n){
+            ans.push_back(temp);
+            return;
+        }
+        
+        for(auto x:mp[a[idx]]){
+            temp.push_back(x);
+            solve(a,n,idx+1,ans,temp,mp);
+            temp.pop_back();
+        }
+        return ;
+    }
+    vector<string> possibleWords(int a[], int n)
+    {
+        // unordered_map<int,vector<char>> mp;
+        // mp[2]={'a','b','c'};
+        // mp[3]={'d','e','f'};
+        // mp[4]={'g','h','i'};
+        // mp[5]={'j','k','l'};
+        // mp[6]={'m','n','o'};
+        // mp[7]={'p','q','r','s'};
+        // mp[8]={'t','u','v'};
+        // mp[9]={'w','x','y','z'};
+        
+        vector<string> mp={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        vector<string> ans;
+        string temp;
+        solve(a,n,0,ans,temp,mp);
+        return ans;
+    }
+};

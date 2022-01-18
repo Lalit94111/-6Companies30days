@@ -1,0 +1,84 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/connect-nodes-at-same-level/1/
+
+class Solution
+{
+    public:
+    Node *next(Node *root){
+        while(root!=NULL){
+            if(root->left!=NULL) return root->left;
+            if(root->right!=NULL) return root->right;
+            root=root->nextRight;
+        }
+        return root;
+    }
+    void connect(Node *root)
+    {
+       Node *temp=root;
+       while(temp!=NULL){
+           Node *temp2=temp;
+           while(temp2!=NULL){
+               if(temp2->left!=NULL){
+                   if(temp2->right!=NULL){
+                       temp2->left->nextRight=temp2->right;
+                       temp2->right->nextRight=next(temp2->nextRight);
+                    //   while(temp2->nextRight!=NULL){
+                    //       if(temp2->nextRight->left!=NULL){
+                    //           temp2->right->nextRight=temp2->nextRight->left;
+                    //           break;
+                    //       }
+                    //       else if(temp2->nextRight->right!=NULL){
+                    //           temp2->right->nextRight=temp2->nextRight->right;
+                    //           break;
+                    //       }
+                    //       else temp2=temp2->nextRight;
+                    //   }
+                   }
+                   else{
+                       temp2->left->nextRight=next(temp2->nextRight);
+                    //   while(temp2->nextRight!=NULL){
+                    //       if(temp2->nextRight->left!=NULL){
+                    //           temp2->left->nextRight=temp2->nextRight->left;
+                    //           break;
+                    //       }
+                    //       else if(temp2->nextRight->right!=NULL){
+                    //           temp2->left->nextRight=temp2->nextRight->right;
+                    //           break;
+                    //       }
+                    //       else temp2=temp2->nextRight;
+                    //   }
+                   }
+               }
+               else if(temp2->right!=NULL){
+                   temp2->right->nextRight=next(temp2->nextRight);
+                //   while(temp2->nextRight!=NULL){
+                //           if(temp2->nextRight->left!=NULL){
+                //               temp2->right->nextRight=temp2->nextRight->left;
+                //               break;
+                //           }
+                //           else if(temp2->nextRight->right!=NULL){
+                //               temp2->right->nextRight=temp2->nextRight->right;
+                //               break;
+                //           }
+                //           else temp2=temp2->nextRight;
+                //       }
+               }
+               temp2=temp2->nextRight;
+           }
+           temp=next(temp);
+        //   while(temp){
+        //       if(temp->left!=NULL){
+        //           temp=temp->left;
+        //           break;
+        //       }
+        //       else if(temp->right!=NULL){
+        //           temp=temp->right;
+        //           break;
+        //       }
+        //       else temp=temp->nextRight;
+        //   }
+       }
+    }    
+      
+};

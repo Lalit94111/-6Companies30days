@@ -1,0 +1,39 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/length-of-largest-region-of-1s-1587115620/1/
+
+class Solution
+{
+    public:
+    //Function to find unit area of the largest region of 1s.
+    int dx[8]={-1,-1,-1,0,1,1,1,0};
+    int dy[8]={-1,0,1,1,1,0,-1,-1};
+    int dfs(int x,int y,vector<vector<int>>& grid,vector<vector<int>>& vis){
+        int n=grid.size(),m=grid[0].size();
+        int count=1;
+        vis[x][y]=1;
+        
+        for(int i=0;i<8;i++){
+            int new_x=x+dx[i],new_y=y+dy[i];
+            if(new_x>=0 && new_x<n && new_y>=0 && new_y<m && vis[new_x][new_y]==0 && grid[new_x][new_y]==1){
+                count+=dfs(new_x,new_y,grid,vis);
+            }
+        }
+        return count;
+    }
+    int findMaxArea(vector<vector<int>>& grid) {
+        int n=grid.size(),m=grid[0].size();
+        vector<vector<int>> vis(n,vector<int>(m,0));
+        
+        int ans=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==0) continue;
+                if(vis[i][j]==0){
+                    ans=max(ans,dfs(i,j,grid,vis));
+                }
+            }
+        }
+        return ans;
+    }
+};

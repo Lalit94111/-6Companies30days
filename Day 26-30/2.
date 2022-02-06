@@ -1,0 +1,23 @@
+
+
+Problem Link : https://leetcode.com/problems/stone-game/
+
+class Solution {
+public:
+    int t[501][501];
+    int solve(int s,int e,vector<int>& piles){
+        if(s>e) return 0;
+        if(t[s][e]!=-1) return t[s][e];
+        int sum1=piles[s]+min(solve(s+2,e,piles),solve(s+1,e-1,piles));
+        int sum2=piles[e]+min(solve(s+1,e-1,piles),solve(s,e-2,piles));
+        return t[s][e]=max(sum1,sum2);
+    }
+    bool stoneGame(vector<int>& piles) {
+        memset(t,-1,sizeof(t));
+        int aliceSum=solve(0,piles.size()-1,piles);
+        int sum=0;
+        for(auto x:piles) sum+=x;
+        int bobSum=sum-aliceSum;
+        return aliceSum>bobSum;
+    }
+};

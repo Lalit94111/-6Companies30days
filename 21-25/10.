@@ -1,0 +1,84 @@
+
+
+Problem Link : https://leetcode.com/problems/number-of-provinces/
+
+class unionFind{
+public:
+    vector<int> root,rank;
+    unionFind(int sz){
+        root=vector<int>(sz);
+        rank=vector<int>(sz);
+        for(int i=0;i<sz;i++){
+            root[i]=i;
+            rank[i]=1;
+        }
+    }
+    
+    int find(int x){
+        if(x==root[x]) return x;
+        return root[x]=find(root[x]);
+    }
+    
+    void unionSet(int x,int y){
+        int rootX=find(x);
+        int rootY=find(y);
+        if(rootX!=rootY){
+            if(rank[rootX]>rank[rootY]) root[rootY]=rootX;
+            else if(rank[rootX]<rank[rootY]) root[rootX]=rootY;
+            else{
+                root[rootY]=rootX;
+                rank[rootX]+=1;
+            }
+        }
+    }
+    bool isConnected(int x,int y) {return find(x)==find(y);}
+};
+
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& grid) {
+        int n=grid.size();
+        unionFind *obj=new unionFind(n);
+        
+        int ans=n;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                if(grid[i][j]==1){
+                    if(!obj->isConnected(i,j)){
+                        obj->unionSet(i,j);
+                        ans--;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+
+/*
+class Solution {
+public:
+    void dfs(int n,vector<vector<int>>& grid,vector<int>& vis){
+        vis[n]=1;
+        int sz=grid.size();
+        for(int i=0;i<sz;i++){
+            if(grid[n][i]==1 && vis[i]==0) dfs(i,grid,vis);
+        }
+    }
+    int findCircleNum(vector<vector<int>>& grid) {
+        int n=grid.size();
+        vector<int> vis(n,0);
+        int ans=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1 && vis[i]==0){
+                    dfs(i,grid,vis);
+                    ans++;
+                } 
+            }
+        }
+        return ans;
+    }
+};
+*/

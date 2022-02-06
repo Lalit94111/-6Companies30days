@@ -1,0 +1,58 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/next-higher-palindromic-number-using-the-same-set-of-digits5859/1/
+
+class Solution{
+  public:
+  void reverse(string& n,int s,int e){
+      while(s<e){
+          swap(n[s],n[e]);
+          s++;
+          e--;
+      }
+  }
+    string nextPalin(string n) { 
+        if(n.length()==1) return "-1";
+        
+        int sz=n.length(),i=-1,j=-1;
+        int l=sz/2;
+        for(i=l-2;i>=0;i--){
+            if(n[i]<n[i+1]) break;
+        }
+        if(i==-1) return "-1";
+        for(j=l-1;j>i;j--){
+            if(n[j]>n[i]) break;
+        }
+        swap(n[j],n[i]);
+        reverse(n,i+1,l-1);
+        
+        i=l-1;
+        if(sz%2) j=l+1;
+        else j=l;
+        while(i>=0){
+            n[j]=n[i];
+            i--;
+            j++;
+        }
+        return n;
+        
+        
+        
+        
+        // string s=n.substr(0,n.length()/2);
+        // int l=s.size(),i=-1,j=-1;
+        // for(i=l-2;i>=0;i--){
+        //     if(s[i]<s[i+1]) break;
+        // }
+        // if(i==-1) return "-1";
+        // for(j=l-1;j>i;j--){
+        //     if(s[j]>s[i]) break;
+        // }
+        // swap(s[j],s[i]);
+        // reverse(s.begin()+i+1,s.end());
+        // string temp=s;
+        // reverse(temp.begin(),temp.end());
+        // if(n.length()%2) s.push_back(n[n.length()/2]);
+        // return s+temp;
+    }
+};

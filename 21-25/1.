@@ -1,0 +1,54 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/minimum-sum-partition3317/1/
+
+class Solution{ 
+  public:
+	int minDifference(int arr[], int n)  { 
+	    int sum=0;
+	    for(int i=0;i<n;i++) sum+=arr[i];
+	    vector<vector<int>> t(n+1,vector<int>(sum+1,0));
+	    
+	    for(int i=0;i<=n;i++) t[i][0]=1;
+	    for(int i=1;i<=n;i++){
+	        for(int j=1;j<=sum;j++){
+	            if(arr[i-1]<=j) t[i][j]=t[i-1][j]||t[i-1][j-arr[i-1]];
+	            else t[i][j]=t[i-1][j];
+	        }
+	    }
+	    int ans=0;
+	    for(int j=sum/2;j>=0;j--){
+	        if(t[n][j]==1){
+	            ans=j;
+	            break;
+	        }
+	    }
+	    return sum-2*ans;
+	} 
+};
+
+
+// class Solution{
+//   int check(int arr[],int n,int idx,int sum,vector<vector<int>>& t){
+//       if(sum==0) return true;
+//       if(idx<0) return false;
+//       if(t[idx][sum]!=-1) t[idx][sum];
+//       if(arr[idx]<=sum) return t[idx][sum]=check(arr,n,idx-1,sum,t)||check(arr,n,idx-1,sum-arr[idx],t);
+//       else return t[idx][sum]=check(arr,n,idx-1,sum,t);
+//   }    
+//   public:
+// 	int minDifference(int arr[], int n)  { 
+// 	    int sum=0;
+// 	    for(int i=0;i<n;i++) sum+=arr[i];
+// 	    vector<vector<int>> t(n+1,vector<int>(sum+1,-1));
+	    
+// 	    int ans=0;
+// 	    for(int s=sum/2;s>=0;s--){
+// 	        if(check(arr,n,n-1,s,t)){
+// 	            ans=s;
+// 	            break;
+// 	        }
+// 	    }
+// 	    return sum-2*ans;
+// 	} 
+// };

@@ -1,0 +1,36 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/largest-number-in-k-swaps-1587115620/1
+
+class Solution
+{
+    public:
+    //Function to find the largest number after k swaps.
+    void solve(string str,int k,string& ans,int idx){
+        if(ans<str) ans=str;
+
+        int n=str.length();
+        if(k==0) return;
+        char maxc=str[idx];
+        for(int i=idx+1;i<n;i++){
+            if(maxc<str[i]){
+                maxc=str[i];
+            }
+        }
+        
+        if(maxc!=str[idx]) k-=1;
+        for(int i=idx;i<n;i++){
+            if(maxc==str[i]){
+                swap(str[i],str[idx]);
+                solve(str,k,ans,idx+1);
+                swap(str[i],str[idx]);
+            }
+        }
+    }
+    string findMaximumNum(string str, int k)
+    {
+       string ans=str;
+       solve(str,k,ans,0);
+       return ans;
+    }
+};

@@ -1,0 +1,42 @@
+
+
+Problem Link : https://leetcode.com/problems/path-with-maximum-probability/
+
+class Solution {
+public:
+    double maxProbability(int n, vector<vector<int>>& ed, vector<double>& succPro, int s, int e) {
+        vector<pair<int,double>> adj[n];
+        for(int i=0;i<ed.size();i++){
+            adj[ed[i][0]].push_back({ed[i][1],succPro[i]});
+            adj[ed[i][1]].push_back({ed[i][0],succPro[i]});
+        }
+        
+        priority_queue<pair<double,int>> pq;
+        vector<double> Probs(n,0);
+        Probs[s]=1;
+        pq.push({1,s});
+        double ans=0;
+        
+        while(!pq.empty()){
+            int node=pq.top().second;
+            double nodePro=pq.top().first;
+            pq.pop();
+            
+            // if(node==e){
+            //     if(ans<nodePro) ans=nodePro;
+            // }
+            
+            if(node==e) return nodePro;
+            
+            for(auto x:adj[node]){
+                int tempNode=x.first;
+                double Pro=x.second;
+                if(nodePro*Pro>Probs[tempNode]){
+                    Probs[tempNode]=nodePro*Pro;
+                    pq.push({Probs[tempNode],tempNode});
+                }
+            }
+        }
+        return ans;
+    }
+};

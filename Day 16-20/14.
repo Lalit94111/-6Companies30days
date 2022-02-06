@@ -1,0 +1,38 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/find-smallest-range-containing-elements-from-k-lists/1/
+
+#define ppi pair<int,pair<int,int>>
+class Solution{
+    public:
+    pair<int,int> findSmallestRange(int num[][N], int n, int k)
+    {
+        int mi=INT_MAX,mx=INT_MIN;
+        priority_queue<ppi,vector<ppi>,greater<ppi>> pq;
+        for(int i=0;i<k;i++){
+            pq.push({num[i][0],{i,0}});
+            mx=max(mx,num[i][0]);
+            mi=min(mi,num[i][0]);
+        }
+        
+        int a=mi,b=mx;
+        pair<int,int> ans;
+        while(true){
+            ppi temp=pq.top();
+            pq.pop();
+            
+            int listNo=temp.second.first,idx=temp.second.second;
+            if(idx+1<n){
+                pq.push({num[listNo][idx+1],{listNo,idx+1}});
+                mi=pq.top().first;
+                mx=max(mx,num[listNo][idx+1]);
+                if(b-a>mx-mi){
+                    a=mi;
+                    b=mx;
+                }
+            }
+            else break;
+        }
+        return {a,b};
+    }
+};

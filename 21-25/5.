@@ -1,0 +1,74 @@
+
+
+Problem Link : https://leetcode.com/problems/split-array-largest-sum/
+
+/*
+class Solution {
+public:
+    int max(long long int n1,long long int n2){
+        return n1<=n2?n2:n1;
+    }
+    int min(long long int n1,long long int n2){
+        return n1<=n2?n1:n2;
+    }
+    long long int t[1001][51];
+    int solve(int idx,vector<int>& nums,int m){
+        long long int ans=INT_MAX,sum=0;
+        int n=nums.size();
+        if(idx>=n) return 0;
+        if(m==0){
+            for(int i=idx;i<n;i++) sum+=nums[i];
+            return sum;
+        }
+        if(t[idx][m]!=-1) return t[idx][m];
+        for(int i=idx;i<n;i++){
+            sum+=nums[i];
+            ans=min(ans,max(sum,solve(i+1,nums,m-1)));
+        }
+        return t[idx][m]=ans;
+    }
+    int splitArray(vector<int>& nums, int m) {
+        memset(t,-1,sizeof(t));
+        return solve(0,nums,m-1);
+    }
+};
+*/
+
+
+
+#define lli long long int
+class Solution {
+public:
+    bool check(int m,lli mid,vector<int>& nums){
+        int n=nums.size();
+        lli sum=0;
+        for(int i=0;i<n;i++){
+            if(nums[i]>mid) return false;
+            sum+=nums[i];
+            if(sum>mid){
+                m--;
+                sum=nums[i];
+            }
+            if(m<0) return false;
+        }
+        return true;
+    }
+    int splitArray(vector<int>& nums, int m) {
+        lli sum=0;
+        int mx=nums[0];
+        for(auto x:nums){
+            sum+=x;
+            mx=max(mx,x);
+        }
+        lli s=mx,e=sum,ans=mx;
+        while(s<=e){
+            lli mid=s+(e-s)/2;
+            if(check(m-1,mid,nums)){
+                ans=mid;
+                e=mid-1;
+            }
+            else s=mid+1;
+        }
+        return ans;
+    }
+};

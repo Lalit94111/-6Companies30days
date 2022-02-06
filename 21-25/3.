@@ -1,0 +1,48 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/find-the-missing-no-in-string/1/
+
+/* You are required to complete this function
+which return the required missing number
+if present else return -1*/
+pair<int,int> findNext(int num,const string& str,int idx){
+    int n=str.length();
+    int ans=0,i;
+    for(i=idx;i<n;i++){
+        ans=ans*10+str[i]-'0';
+        if(ans>num) break;
+    }
+    return {ans,i+1};
+}
+int check(const string& str,int len){
+    int n=str.length();
+    int num=stoi(str.substr(0,len));
+    int cnt=0,ans;
+    
+    for(int i=len;i<n;){
+        pair<int,int> p=findNext(num,str,i);
+        int tempNum=p.first;
+        i=p.second;
+        if(tempNum==num+1){
+            num=tempNum;
+            continue;
+        }
+        else if(tempNum==num+2){
+            cnt++;
+            ans=num+1;
+            num=tempNum;
+        }
+        else return -1;
+    }
+    return cnt==1?ans:-1;
+}
+int missingNumber(const string& str)
+{
+    int n=str.length();
+    for(int i=1;i<=6;i++){
+        if(i>=n) break;
+        int temp=check(str,i);
+        if(temp!=-1) return temp;
+    }
+    return -1;
+}

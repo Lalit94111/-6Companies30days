@@ -1,0 +1,31 @@
+
+
+Problem Link : https://leetcode.com/problems/divide-two-integers/
+
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        long long dvd=dividend,dvs=divisor;
+        if(dvd==INT_MIN && dvs==-1) return INT_MAX;
+        
+        bool flag=false;
+        if(dvd<0 || dvs<0){
+            if(dvd<0 && dvs<0) flag=false;
+            else flag=true;
+        }
+        dvd=abs(dvd);
+        dvs=abs(dvs);
+        long long ans=0;
+        while(dvd>=dvs){
+            long long cnt=1;
+            while(cnt*dvs<=dvd){
+                cnt=cnt<<1;
+            }
+            cnt=cnt>>1;
+            ans+=cnt;
+            dvd=dvd-dvs*cnt;
+        }
+        if(flag) ans*=-1;
+        return ans;
+    }
+};

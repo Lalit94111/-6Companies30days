@@ -1,0 +1,20 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/number-of-unique-paths5339/1/
+
+class Solution
+{
+    public:
+    //Function to find total number of unique paths.
+    int t[16][16];
+    int solve(int x,int y,int n,int m){
+        if(x==n-1 || y==m-1 ) return 1;
+        if(t[x][y]!=-1) return t[x][y];
+        return t[x][y]=solve(x+1,y,n,m)+solve(x,y+1,n,m);
+    }
+    int NumberOfPath(int a, int b)
+    {
+        memset(t,-1,sizeof(t));
+        return solve(0,0,a,b);
+    }
+};

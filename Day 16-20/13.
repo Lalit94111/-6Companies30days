@@ -1,0 +1,55 @@
+
+
+Problem Link : https://practice.geeksforgeeks.org/problems/minimum-insertions-to-make-two-arrays-equal/1/
+
+class Solution {
+  public:
+    // map<pair<int,int>,int> mp;
+    // int solve(int a[],int b[],int n,int m){
+    //     if(n<0||m<0) return abs(n-m);
+    //     int ans=200001;
+    //     if(mp.find({n,m})!=mp.end()) return mp[{n,m}];
+    //     if(a[n]==b[m]){
+    //         ans=solve(a,b,n-1,m-1);
+    //     }
+    //     int t1=1+solve(a,b,n-1,m);
+    //     int t2=1+solve(a,b,n,m-1);
+    //     ans=min(ans,min(t1,t2));
+    //     return mp[{n,m}]=ans;
+    // }
+    int find(vector<int>& ans,int num){
+        int s=0,e=ans.size()-1,res=0;
+        while(s<=e){
+            int mid=s+(e-s)/2;
+            if(ans[mid]>=num){
+                res=mid;
+                e=mid-1;
+            }
+            else s=mid+1;
+        }
+        return res;
+    }
+    int LIS(vector<int>& v){
+        int n=v.size();
+        vector<int> ans;
+        for(int i=0;i<n;i++){
+            if(ans.size()==0) ans.push_back(v[i]);
+            else if(v[i]>ans.back()) ans.push_back(v[i]);
+            else{
+                int idx=find(ans,v[i]);
+                ans[idx]=v[i];
+            }
+        }
+        return ans.size();
+    }
+    int minInsAndDel(int a[], int b[], int n, int m) {
+        unordered_set<int> mp;
+        for(int i=0;i<m;i++) mp.insert(b[i]);
+        vector<int> temp;
+        for(int i=0;i<n;i++){
+            if(mp.find(a[i])!=mp.end()) temp.push_back(a[i]);
+        }
+        int lis=LIS(temp);
+        return n+m-2*lis;
+    }
+};
